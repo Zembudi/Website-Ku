@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log Aktivitas Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    ul { text-align: left; margin-top: 20px; padding: 0; }
+    li { background: rgba(255,255,255,0.1); margin: 5px 0; padding: 10px; border-radius: 5px; list-style: none; }
+    button { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📜 Log Aktivitas (Hanya Admin)</h2>
+    <ul id="logList"></ul>
+    <button onclick="kembali()">Kembali</button>
+  </div>
+
+  <script>
+    const user = sessionStorage.getItem('loginUser');
+    const isAdmin = sessionStorage.getItem('isAdmin');
+
+    if (!user || isAdmin !== "true") {
+      alert("Hanya admin yang bisa melihat log!");
+      window.location.href = "index.html";
+    }
+
+    const logs = JSON.parse(localStorage.getItem('logs')) || [];
+    const list = document.getElementById('logList');
+
+    if (logs.length === 0) {
+      list.innerHTML = "<li>Belum ada aktivitas yang tercatat.</li>";
+    } else {
+      logs.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        list.appendChild(li);
+      });
+    }
+
+    function kembali() {
+      window.location.href = "menu.html";
+    }
+  </script>
+</body>
+</html>
