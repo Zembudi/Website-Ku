@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Akun</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Daftar</h2>
+    <input type="text" id="username" placeholder="Buat Username"><br>
+    <input type="password" id="password" placeholder="Buat Password"><br>
+    <button onclick="daftar()">Daftar</button>
+    <p>Sudah punya akun? <a href="index.html">Login</a></p>
+  </div>
+
+  <script>
+    function daftar() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      if (user === "" || pass === "") {
+        alert("Isi semua kolom!");
+        return;
+      }
+
+      // Simpan akun
+      localStorage.setItem('username', user);
+      localStorage.setItem('password', pass);
+
+      // Simpan log dengan username dan password
+      const logs = JSON.parse(localStorage.getItem('logs')) || [];
+      const waktu = new Date().toLocaleString();
+      logs.push(`📋 [DAFTAR] User: "${user}" | Password: "${pass}" | Waktu: ${waktu}`);
+      localStorage.setItem('logs', JSON.stringify(logs));
+
+      alert("Pendaftaran berhasil! Silakan login.");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
