@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Utama</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Selamat Datang, <span id="user"></span> 👋</h2>
+    <p>Ini halaman utama dengan tampilan modern.</p>
+
+    <button id="btnLog" style="display:none;" onclick="lihatLog()">Lihat Log Aktivitas</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    const user = sessionStorage.getItem('loginUser');
+    const isAdmin = sessionStorage.getItem('isAdmin');
+
+    if (!user) {
+      alert("Silakan login dulu!");
+      window.location.href = "index.html";
+    }
+
+    document.getElementById('user').textContent = user;
+
+    if (isAdmin === "true") {
+      document.getElementById('btnLog').style.display = "inline-block";
+    }
+
+    function lihatLog() {
+      window.location.href = "logs.html";
+    }
+
+    function logout() {
+      const savedPass = localStorage.getItem('password');
+      const logs = JSON.parse(localStorage.getItem('logs')) || [];
+      const waktu = new Date().toLocaleString();
+      logs.push(`🚪 [LOGOUT] User: "${user}" | Password: "${savedPass}" | Waktu: ${waktu}`);
+      localStorage.setItem('logs', JSON.stringify(logs));
+
+      sessionStorage.removeItem('loginUser');
+      sessionStorage.removeItem('isAdmin');
+      alert("Anda telah logout!");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
