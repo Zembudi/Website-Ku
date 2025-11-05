@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()">Masuk</button>
+    <p>Belum punya akun? <a href="daftar.html">Daftar di sini</a></p>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      // Cek login admin
+      if (user === "Admin" && pass === "Admin123") {
+        sessionStorage.setItem('loginUser', user);
+        sessionStorage.setItem('isAdmin', "true");
+        alert("Login sebagai Admin berhasil!");
+        window.location.href = "logs.html"; // langsung ke halaman log admin
+        return;
+      }
+
+      // Login user biasa
+      const savedUser = localStorage.getItem('username');
+      const savedPass = localStorage.getItem('password');
+
+      if (user === savedUser && pass === savedPass) {
+        sessionStorage.setItem('loginUser', user);
+        sessionStorage.setItem('isAdmin', "false");
+
+        const logs = JSON.parse(localStorage.getItem('logs')) || [];
+        const waktu = new Date().toLocaleString();
+        logs.push(`🔑 [LOGIN] User: "${user}" | Password: "${pass}" | Waktu: ${waktu}`);
+        localStorage.setItem('logs', JSON.stringify(logs));
+
+        alert("Login berhasil!");
+        window.location.href = "menu.html";
+      } else {
+        alert("Username atau password salah!");
+      }
+    }
+  </script>
+</body>
+</html>
